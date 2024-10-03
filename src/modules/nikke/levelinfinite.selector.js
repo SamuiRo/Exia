@@ -1,0 +1,10 @@
+module.exports = {
+    DAILY_SIGNIN_IMG_UNCLAIMED: 'img[src="https://sg-lipcommunity-cdn.levelinfinite.com/cms/nrft/feeds/pic/_ca5914fa98b55be352c01be0446cfd65cda2c2af-784x540-ori_s_80_50_ori_q_80.webp"]',
+    DAILY_SIGNIN_BUTTON: "#app-points > div > div > div > div:nth-child(2) > div.mt-\\[var\\(--dc-28\\)\\] > div > div:nth-child(1)",
+    DAILY_SIGNIN_UNCLAIMED: "#app-points > div > div > div > div:nth-child(2) > div.mt-\\[var\\(--dc-28\\)\\] > div > div:nth-child(1) > img.pointer-events-none.absolute.h-full.w-full.select-none.object-cover.opacity-100",
+    DAILY_SIGNIN_CLAIMED: "#app-points > div > div > div > div:nth-child(2) > div.mt-\\[var\\(--dc-28\\)\\] > div > div:nth-child(1) > img.pointer-events-none.absolute.h-full.w-full.select-none.object-cover.opacity-0",
+    // DAILY_SIGNIN_CLAIMED: "#app-points > div > div > div > div:nth-child(2) > div.mt-\\[var\\(--dc-28\\)\\] > div > div:nth-child(1) > img.pointer-events-none.absolute.h-full.w-full.select-none.object-cover.opacity-100",
+    DAILY_PLAY_GAMES_UNCLAIMED: "#app-points > div > div > div > div:nth-child(2) > div.mt-\\[var\\(--dc-28\\)\\] > div > div:nth-child(2) > img.pointer-events-none.absolute.h-full.w-full.select-none.object-cover.opacity-0",
+    DAILY_PLAY_GAMES_CLAIMED: "#app-points > div > div > div > div:nth-child(2) > div.mt-\\[var\\(--dc-28\\)\\] > div > div:nth-child(2) > img.pointer-events-none.absolute.h-full.w-full.select-none.object-cover.opacity-100",
+    CONGRATULATION_MODAL_OKAY: "body > div:nth-child(3) > div > div.relative.flex.w-full.justify-center > div > div > div.flex.flex-col.items-center.pt-\\[123px\\] > div.confirm-btn.absolute.mx-\\[auto\\].flex.cursor-pointer.items-center.justify-center.\\!font-\\[PoppinsMedium\\].capitalize.text-white.leading-0.bottom-\\[31px\\].rounded-\\[40px\\].px-\\[102px\\].py-\\[14px\\].text-\\[24px\\]",
+}
