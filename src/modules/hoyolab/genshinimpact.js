@@ -16,7 +16,7 @@ async function claim(context) {
 
         const active_day_element = await page.$(ACTIVE_DAY_ELEMENT)
 
-        if (actived_day) {
+        if (active_day_element) {
             message.reward = await active_day_element.innerText()
             await active_day_element.click();
 
@@ -25,6 +25,13 @@ async function claim(context) {
             await page.waitForSelector(REWARDS_MODAL)
 
             const modal = await page.$(REWARDS_MODAL)
+
+            try {
+                const modal_text = await modal.innerText()
+                message.text = modal_text
+            } catch (error) {
+                console.log(error)
+            }
 
             try {
                 const congrats_message_element = await modal.$(REWARDS_MODAL_CONGRATS_MESSAGE)

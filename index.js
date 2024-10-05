@@ -3,11 +3,11 @@ const { send_message_to_telegram } = require("./src/modules/notification/notific
 const levelinfinite = require("./src/modules/nikke/levelinfinite")
 const { genshinimpact } = require("./src/modules/hoyolab/index")
 
-const { NIKKE, GENSHIN_IMPACT } = require("./src/configs/app.config")
+const { NIKKE, GENSHIN_IMPACT, HEADLESS } = require("./src/configs/app.config")
 
 async function main() {
     try {
-        const context = await init("Exia", false)
+        const context = await init("Exia", HEADLESS)
 
         if (NIKKE) await levelinfinite.claim(context)
 
