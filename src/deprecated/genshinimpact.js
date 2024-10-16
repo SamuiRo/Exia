@@ -1,7 +1,9 @@
-const { send_message_to_telegram } = require("../notification/notification")
-const { sleep } = require("../../utils/utils")
+const { send_message_to_telegram } = require("../modules/notification/notification")
+const { sleep } = require("../utils/utils")
 
 const { ACTIVE_DAY_ELEMENT, REWARDS_MODAL, REWARDS_MODAL_CONGRATS_MESSAGE, REWARDS_MODAL_SENDED_MESSAGE, REWARDS_MODAL_TOMMOROW_MESSAGE } = require("./genshinimpact.selectors")
+
+const url = "https://act.hoyolab.com/ys/event/signin-sea-v3/index.html?act_id=e202102251931481&hyl_auth_required=true&hyl_presentation_style=fullscreen&utm_source=hoyolab&utm_medium=tools&lang=en-us&bbs_theme=light&bbs_theme_device=1"
 
 async function claim(context) {
     const message = {}
@@ -9,61 +11,71 @@ async function claim(context) {
     try {
         page = await context.newPage()
 
-        await page.goto("https://act.hoyolab.com/ys/event/signin-sea-v3/index.html?act_id=e202102251931481&hyl_auth_required=true&hyl_presentation_style=fullscreen&utm_source=hoyolab&utm_medium=tools&lang=en-us&bbs_theme=light&bbs_theme_device=1", {
+        await page.goto(url, {
             waitUntil: "domcontentloaded", // Чекаємо, поки всі запити завершаться
         })
         await sleep(5000)
 
-        const active_day_element = await page.$(ACTIVE_DAY_ELEMENT)
+        const cookies = await page.context().cookies();
 
-        if (active_day_element) {
-            message.reward = await active_day_element.innerText()
-            await active_day_element.click();
+        const cookieHeader = cookies.map(cookie => `${cookie.name}=${cookie.value}`).join('; ');
 
-            await sleep(5000)
+        console.log(cookieHeader)
 
-            await page.waitForSelector(REWARDS_MODAL)
 
-            const modal = await page.$(REWARDS_MODAL)
 
-            try {
-                const modal_text = await modal.innerText()
-                message.text = modal_text
-            } catch (error) {
-                console.log(error)
-            }
 
-            try {
-                const congrats_message_element = await modal.$(REWARDS_MODAL_CONGRATS_MESSAGE)
-                const congrats_message = await congrats_message_element.innerText()
-                message.congrats_message = congrats_message
-            } catch (error) {
-                console.log(error)
-            }
-            try {
-                const rewards_sended_message_element = await modal.$(REWARDS_MODAL_SENDED_MESSAGE)
-                const rewards_sended_message = await rewards_sended_message_element.innerText()
-                message.rewards_sended = rewards_sended_message
-            } catch (error) {
-                console.log(error)
-            }
-            try {
-                const tommorow_reward_message_element = await modal.$(REWARDS_MODAL_TOMMOROW_MESSAGE)
-                const tommorow_reward_message = await tommorow_reward_message_element.innerText()
-                message.tommorow_reward = tommorow_reward_message
-            } catch (error) {
-                console.log(error)
-            }
 
-            await sleep(10000)
-        } else {
-            message.reward = "Claimed"
-        }
+        // const active_day_element = await page.$(ACTIVE_DAY_ELEMENT)
 
-        const checked_stats = await get_genshin_checked_statistics(page)
+        // if (active_day_element) {
+        //     message.reward = await active_day_element.innerText()
+        //     await active_day_element.click();
 
-        message.checked = checked_stats.checked_days
-        message.missed = checked_stats.missed_days
+        //     await sleep(5000)
+
+        //     await page.waitForSelector(REWARDS_MODAL)
+
+        //     const modal = await page.$(REWARDS_MODAL)
+
+        //     try {
+        //         const modal_text = await modal.innerText()
+        //         message.text = modal_text
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+
+        //     try {
+        //         const congrats_message_element = await modal.$(REWARDS_MODAL_CONGRATS_MESSAGE)
+        //         const congrats_message = await congrats_message_element.innerText()
+        //         message.congrats_message = congrats_message
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+        //     try {
+        //         const rewards_sended_message_element = await modal.$(REWARDS_MODAL_SENDED_MESSAGE)
+        //         const rewards_sended_message = await rewards_sended_message_element.innerText()
+        //         message.rewards_sended = rewards_sended_message
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+        //     try {
+        //         const tommorow_reward_message_element = await modal.$(REWARDS_MODAL_TOMMOROW_MESSAGE)
+        //         const tommorow_reward_message = await tommorow_reward_message_element.innerText()
+        //         message.tommorow_reward = tommorow_reward_message
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+
+        //     await sleep(10000)
+        // } else {
+        //     message.reward = "Claimed"
+        // }
+
+        // const checked_stats = await get_genshin_checked_statistics(page)
+
+        // message.checked = checked_stats.checked_days
+        // message.missed = checked_stats.missed_days
 
     } catch (error) {
         console.log(error)

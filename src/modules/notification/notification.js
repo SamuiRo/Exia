@@ -1,5 +1,6 @@
 const axios = require("axios")
 const { TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL_ID } = require("../../configs/app.config")
+const { object_to_string } = require("../../utils/utils")
 
 /**
  * Відправляє повідомлення до Telegram каналу через бота.
@@ -27,10 +28,22 @@ async function send_message_to_telegram(message) {
         }
     } catch (error) {
         console.error(`Помилка під час запиту до Telegram API: ${error.message}`);
-        throw error; // Кидає помилку, щоб обробити її у вищих рівнях програми
+        // throw error; // Кидає помилку, щоб обробити її у вищих рівнях програми
+    }
+}
+
+async function send_notification(content) {
+    try {
+        const message = object_to_string(content)
+
+        await send_message_to_telegram(message)
+
+    } catch (error) {
+        console.log(error)
     }
 }
 
 module.exports = {
-    send_message_to_telegram
+    send_message_to_telegram,
+    send_notification
 }

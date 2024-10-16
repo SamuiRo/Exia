@@ -3,6 +3,8 @@ const { sleep } = require("../../utils/utils")
 
 const { CONGRATULATION_MODAL_OKAY, DAILY_PLAY_GAMES_CLAIMED, DAILY_SIGNIN_IMG_UNCLAIMED, DAILY_SIGNIN_BUTTON } = require("./levelinfinite.selector")
 
+const url = "https://pass.levelinfinite.com/rewards"
+
 async function claim(context) {
     const message = {
         header: "Levelinfinite Claim"
@@ -11,7 +13,7 @@ async function claim(context) {
     try {
         page = await context.newPage()
 
-        await page.goto("https://pass.levelinfinite.com/rewards", {
+        await page.goto(url, {
             waitUntil: "domcontentloaded", // Чекаємо, поки всі запити завершаться
         })
         await sleep(5000)

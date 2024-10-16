@@ -1,17 +1,40 @@
 const { init } = require("./src/modules/browser/browser.module")
 const { send_message_to_telegram } = require("./src/modules/notification/notification")
 const levelinfinite = require("./src/modules/nikke/levelinfinite")
-const { genshinimpact } = require("./src/modules/hoyolab/index")
+const { http_genshinimpact, http_honkaistarrail, http_honkaiimpact3, http_zenlesszonezero } = require("./src/modules/hoyolab/index")
+const { create_cron_job } = require("./src/utils/utils")
 
-const { NIKKE, GENSHIN_IMPACT, HEADLESS } = require("./src/configs/app.config")
+const { NIKKE, GENSHIN_IMPACT, HEADLESS, HONKAI_STARRAIL, ZENLESS_ZONE_ZERO, HONKAI_IMPACT3 } = require("./src/configs/app.config")
 
 async function main() {
     try {
-        const context = await init("Exia", HEADLESS)
+        // const context = await init("Exia", HEADLESS)
 
-        if (NIKKE) await levelinfinite.claim(context)
+        // if (NIKKE) await levelinfinite.claim(context)
 
-        if (GENSHIN_IMPACT) await genshinimpact.claim(context)
+        if (GENSHIN_IMPACT) {
+            create_cron_job('0 13 * * *', http_genshinimpact.claim);
+            console.log("Genshin Impact cron job scheduled");
+        }
+
+        if (HONKAI_STARRAIL) {
+            create_cron_job('10 13 * * *', http_honkaistarrail.claim);
+            console.log("Honkai Star Rail cron job scheduled");
+        }
+
+        if (HONKAI_IMPACT3) {
+            create_cron_job('20 13 * * *', http_honkaiimpact3.claim);
+            console.log("Honkai Impact 3d cron job scheduled");
+        }
+
+        if (HONKAI_IMPACT3) {
+            create_cron_job('30 13 * * *', http_zenlesszonezero.claim);
+            console.log("Zenless Zone Zero cron job scheduled");
+        }
+
+        // if (HONKAI_IMPACT3) await http_honkaiimpact3.claim()
+
+        // if (ZENLESS_ZONE_ZERO) await http_zenlesszonezero.claim()
 
     } catch (error) {
         console.log(error)
