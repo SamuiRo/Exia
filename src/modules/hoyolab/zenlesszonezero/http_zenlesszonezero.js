@@ -5,7 +5,7 @@ const { set_request_headers } = require("../../../utils/utils")
 const { send_notification } = require("../../notification/notification")
 
 async function claim() {
-    let message = {}
+    let message = "Zenless Zone Zero \n"
     try {
         const headers = set_request_headers(COOKIE, USERAGENT, DEVICE_ID)
 
@@ -15,13 +15,13 @@ async function claim() {
 
         console.log(responseJson)
 
-        if (responseJson?.message === "OK") message.result = "Claimed"
-        if (bannedCheck) message.banned = "CAPTCHA ERROR"
-
-        await send_notification(message)
+        if (responseJson?.message === "OK") message += "Status: Claimed \n"
+        if (bannedCheck) message += "Error: Capcha Error"
     } catch (error) {
         console.log(error)
-        message.error = error.message
+        message += error.message
+    } finally {
+        await send_notification(message)
     }
 }
 

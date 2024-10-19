@@ -16,6 +16,7 @@ module.exports = {
     ZENLESS_ZONE_ZERO_API: "https://sg-public-api.hoyolab.com/event/luna/zzz/os/sign",
     USERAGENT: process.env.USERAGENT,
     TELEGRAM_CHANNEL_ID: process.env.TELEGRAM_CHANNEL_ID,
+    TELEGRAM_FORUM_ID: process.env.TELEGRAM_FORUM_ID,
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     COOKIE: process.env.COOKIE,
     DEVICE_ID: process.env.DEVICE_ID,

@@ -1,42 +1,37 @@
 const axios = require("axios")
-const { TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL_ID } = require("../../configs/app.config")
+const { TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL_ID, TELEGRAM_FORUM_ID } = require("../../configs/app.config")
 const { object_to_string } = require("../../utils/utils")
 
 /**
- * Відправляє повідомлення до Telegram каналу через бота.
- * 
- * @param {string} botToken - Токен вашого Telegram бота.
- * @param {string} chatId - ID каналу або чату, куди буде відправлено повідомлення (формат @channelusername або ID чату).
- * @param {string} message - Текст повідомлення для відправки.
- * @returns {Promise<void>} - Повертає проміс без результату після успішної відправки.
- * @throws {Error} - Кидає помилку, якщо запит не вдається.
+ * Функція для відправки повідомлення в простий чат або форумний топік
+ * @param {string} message - Текст повідомлення, яке потрібно відправити
+ * @param {string} chat_id - ID чату, в який потрібно надіслати повідомлення (за замовчуванням з .env)
+ * @param {number} [message_thread_id] - ID форумного топіку (необов'язковий параметр)
  */
-async function send_message_to_telegram(message) {
+async function send_message_to_telegram(message, chat_id, message_thread_id = null) {
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
     try {
-        const response = await axios.post(url, {
-            chat_id: TELEGRAM_CHANNEL_ID,
-            text: message,
-            // parse_mode: 'Markdown', // або 'HTML', якщо потрібно підтримувати форматування HTML
-        });
+        const payload = {
+            chat_id: chat_id,
+            text: message
+        };
 
-        if (response.data.ok) {
-            console.log('Повідомлення успішно відправлено');
-        } else {
-            throw new Error(`Помилка відправки повідомлення: ${response.data.description}`);
-        }
+        if (message_thread_id) payload.message_thread_id = message_thread_id;
+
+        const response = await axios.post(url, payload);
+        console.log('Message sent successfully:', response.data);
     } catch (error) {
-        console.error(`Помилка під час запиту до Telegram API: ${error.message}`);
-        // throw error; // Кидає помилку, щоб обробити її у вищих рівнях програми
+        console.error('Error sending message:', error.response ? error.response.data : error.message);
     }
-}
+};
 
 async function send_notification(content) {
     try {
-        const message = object_to_string(content)
+        let message = content
+        // message = object_to_string(content)
 
-        await send_message_to_telegram(message)
+        await send_message_to_telegram(message, TELEGRAM_CHANNEL_ID, TELEGRAM_FORUM_ID)
 
     } catch (error) {
         console.log(error)
